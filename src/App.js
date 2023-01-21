@@ -1,23 +1,38 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
+
+  const [component, setComponent] = useState('posts');
+  
+  const handleChange = (para) => {
+    setComponent(para);
+  }
+
+  // here we are fatching data from the server 
+
+  useEffect(()=>{
+    fetch(`https://jsonplaceholder.typicode.com/${component}`)
+      .then(response => response.json())
+      .then(json => console.log(json))
+   
+      // when the value of the component changes fetch will rerander
+  }, [component]) 
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='flex flex-row '>
+      <div>
+          <button onClick={() => handleChange('posts')}>post</button>
+          <button onClick={() => handleChange('users')}>users</button>
+          <button onClick={() => {setComponent('todos')}}>todos</button>
+      </div>
+      <div>
+       <h1>
+        {
+          component
+        }
+       </h1>
+      </div>
     </div>
   );
 }
